@@ -2,7 +2,7 @@ class Player
   attr_reader :points, :cards, :bank
 
   def initialize
-    @bank = 10
+    @bank = 100
     @points = 0
     @cards = []
   end
