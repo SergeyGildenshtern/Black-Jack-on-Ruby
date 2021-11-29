@@ -1,8 +1,8 @@
 class Player
-  attr_reader :points, :cards
+  attr_reader :points, :cards, :bank
 
   def initialize
-    @bank = 100
+    @bank = 10
     @points = 0
     @cards = []
   end
@@ -13,15 +13,20 @@ class Player
   end
 
   def make_bet
-    if @bank > 0
-      @bank -= 10
-    else
-      puts "Недостаточно денег!"
-    end
+    @bank -= 10 if @bank > 0
   end
 
-  def get_win
+  def win
     @bank += 20
+    restore_values
+  end
+
+  def lose
+    restore_values
+  end
+
+  def return_bets
+    @bank += 10
     restore_values
   end
 
