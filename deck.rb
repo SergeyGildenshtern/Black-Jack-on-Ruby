@@ -4,7 +4,7 @@ class Deck
     create_deck
   end
 
-  def give_card
+  def get_card
     @cards.delete(@cards.sample)
   end
 
