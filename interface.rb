@@ -1,19 +1,9 @@
-require_relative 'dealer'
-require_relative 'user'
-require_relative 'deck'
-
 class Interface
-  def initialize
-    @dealer = Dealer.new
-    @user = User.new
+  def initialize(user, dealer)
+    @user = user
+    @dealer = dealer
   end
 
-  def start
-    input_name
-    game_preparation
-  end
-
-  private
   def input_name
     print "Введите ваше имя:"
     @user_name = gets.chomp
@@ -22,58 +12,18 @@ class Interface
 
   def make_bets
     puts "\nИгроки делают ставки по 10$"
-    if @dealer.make_bet.nil?
+  end
+
+  def not_enough_money(player)
+    if player == Dealer
       puts "У соперника недостаточно денег!"
-      game_over
-    else
-      if @user.make_bet.nil?
-        puts "Недостаточно денег!"
-        game_over
-      else
-        game
-      end
+    elsif player == User
+      puts "Недостаточно денег!"
     end
   end
 
-  def game_preparation
-    distribute_cards
-    make_bets
-  end
-
-  def game
-    if full_hands?
-      open_cards
-    else
-      puts "\nВаши очки: #{@user.points}"
-      show_cards
-
-      puts "\nВыберите действие:"
-      puts "1) Пропустить ход"
-      puts "2) Добавить карту"
-      puts "3) Открыть карты"
-      puts "4) Завершить игру"
-
-      case gets.chomp
-      when '1'
-        dealer_move
-        game
-      when '2'
-        add_card
-        game
-      when '3'
-        open_cards
-      when '4'
-      else
-        puts "Неизвестная команда!"
-        game
-      end
-    end
-  end
-
-  def distribute_cards
-    @deck = Deck.new
-    2.times { @user.take_card(@deck) }
-    2.times { @dealer.take_card(@deck) }
+  def show_score
+    puts "\nВаши очки: #{@user.points}"
   end
 
   def show_cards
@@ -81,24 +31,16 @@ class Interface
     @user.cards.each { |card| print " #{card.to_s} " }
     puts "\n---------------------"
     print "Карты соперника:"
-    @dealer.cards.each { |card| print" ** "}
+    @dealer.cards.size.times { print" ** " }
   end
 
-  def dealer_move
-    @dealer.move(@deck)
-  end
-
-  def add_card
-    @user.take_card(@deck)
-    dealer_move
-  end
-
-  def full_hands?
-    if @user.cards.size > 2 && @dealer.cards.size > 2
-      true
-    else
-      false
-    end
+  def show_menu
+    puts "\nВыберите действие:"
+    puts "1) Пропустить ход"
+    puts "2) Добавить карту"
+    puts "3) Открыть карты"
+    puts "4) Завершить игру"
+    gets.chomp
   end
 
   def open_cards
@@ -107,58 +49,30 @@ class Interface
     puts "\n---------------------"
     print "Карты соперника:"
     @dealer.cards.each { |card| print " #{card.to_s} "}
-    take_stock
   end
 
   def take_stock
     puts "\nВы набрали #{@user.points} очков"
     puts "Соперник набрал #{@dealer.points} очков"
-
-    if @user.points > @dealer.points && @user.points <= 21
-      win
-    elsif @dealer.points > @user.points && @dealer.points <= 21
-      lose
-    elsif @user.points == @dealer.points
-      puts 'Ничья'
-      @dealer.return_bets
-      @user.return_bets
-    elsif @user.points - @dealer.points < 0
-      win
-    else
-      lose
-    end
-
-    continue_game
   end
 
   def win
-    puts 'Вы выиграли!'
-    @user.win
-    @dealer.lose
+    puts "Вы выиграли!"
   end
 
   def lose
-    puts 'Вы проиграли!'
-    @user.lose
-    @dealer.win
+    puts "Вы проиграли!"
+  end
+
+  def draw
+    puts "Ничья"
   end
 
   def continue_game
     puts "\nХотите продолжить игру?"
     puts "1) Да"
     puts "2) Нет"
-
-    case gets.chomp
-    when "1"
-      game_preparation
-    when "2"
-      game_over
-    else
-      raise "Неизвестная команда!"
-    end
-  rescue RuntimeError => e
-    puts e.message
-    retry
+    gets.chomp
   end
 
   def game_over

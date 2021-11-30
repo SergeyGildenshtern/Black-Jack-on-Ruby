@@ -1,4 +1,4 @@
-require_relative 'interface'
+require_relative 'game'
 
-game = Interface.new
+game = Game.new
 game.start
