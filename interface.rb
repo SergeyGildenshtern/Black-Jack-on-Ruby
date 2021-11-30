@@ -114,21 +114,33 @@ class Interface
     puts "\nВы набрали #{@user.points} очков"
     puts "Соперник набрал #{@dealer.points} очков"
 
-    if (21 - @user.points).abs < (21 - @dealer.points).abs
-      puts 'Вы выиграли!'
-      @user.win
-      @dealer.lose
-    elsif (21 - @user.points).abs > (21 - @dealer.points).abs
-      puts 'Вы проиграли!'
-      @dealer.win
-      @user.lose
-    else
+    if @user.points > @dealer.points && @user.points <= 21
+      win
+    elsif @dealer.points > @user.points && @dealer.points <= 21
+      lose
+    elsif @user.points == @dealer.points
       puts 'Ничья'
       @dealer.return_bets
       @user.return_bets
+    elsif @user.points - @dealer.points < 0
+      win
+    else
+      lose
     end
 
     continue_game
+  end
+
+  def win
+    puts 'Вы выиграли!'
+    @user.win
+    @dealer.lose
+  end
+
+  def lose
+    puts 'Вы проиграли!'
+    @user.lose
+    @dealer.win
   end
 
   def continue_game

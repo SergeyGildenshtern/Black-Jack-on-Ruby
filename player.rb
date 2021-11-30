@@ -42,7 +42,7 @@ class Player
     if card == 'Q' || card == 'J' || card == 'K'
       @points += 10
     elsif card == 'A'
-      if (21 - (@points + 11)).abs < (21 - (@points + 1)).abs
+      if @points + 11 <= 21
         @points += 11
       else
         @points += 1
