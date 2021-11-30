@@ -43,6 +43,10 @@ class Interface
     gets.chomp
   end
 
+  def unknown_command
+    puts "Неизвестная команда!"
+  end
+
   def open_cards
     print "\nВаши карты:"
     @user.cards.each { |card| print " #{card.to_s} "}

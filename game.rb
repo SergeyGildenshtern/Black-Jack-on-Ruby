@@ -63,7 +63,7 @@ class Game
       when '4'
         @interface.game_over
       else
-        puts "Неизвестная команда!"
+        @interface.unknown_command
         play
       end
     end
@@ -131,8 +131,8 @@ class Game
     else
       raise "Неизвестная команда!"
     end
-  rescue RuntimeError => e
-    puts e.message
+  rescue RuntimeError
+    @interface.unknown_command
     retry
   end
 end
