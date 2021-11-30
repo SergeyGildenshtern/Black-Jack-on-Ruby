@@ -1,15 +1,23 @@
+require_relative 'hand'
+
 class Player
-  attr_reader :points, :cards, :bank
+  attr_reader :bank
 
   def initialize
     @bank = 100
-    @points = 0
-    @cards = []
+    @hand = Hand.new
+  end
+
+  def points
+    @hand.points
+  end
+
+  def cards
+    @hand.cards
   end
 
   def take_card(deck)
-    @cards << deck.get_card
-    update_points
+    @hand.add_card(deck.get_card)
   end
 
   def make_bet
@@ -31,24 +39,6 @@ class Player
   end
 
   def restore_values
-    @points = 0
-    @cards = []
-  end
-
-  private
-  def update_points
-    name = @cards.last.name
-
-    if name == 'Q' || name == 'J' || name == 'K'
-      @points += 10
-    elsif name == 'A'
-      if @points + 11 <= 21
-        @points += 11
-      else
-        @points += 1
-      end
-    else
-      @points += name.to_i
-    end
+    @hand = Hand.new
   end
 end
