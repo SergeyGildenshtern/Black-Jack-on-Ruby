@@ -37,18 +37,18 @@ class Player
 
   private
   def update_points
-    card = @cards.last[0..-2]
+    name = @cards.last.name
 
-    if card == 'Q' || card == 'J' || card == 'K'
+    if name == 'Q' || name == 'J' || name == 'K'
       @points += 10
-    elsif card == 'A'
+    elsif name == 'A'
       if @points + 11 <= 21
         @points += 11
       else
         @points += 1
       end
     else
-      @points += card.to_i
+      @points += name.to_i
     end
   end
 end

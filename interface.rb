@@ -78,7 +78,7 @@ class Interface
 
   def show_cards
     print "Ваши карты:"
-    @user.cards.each { |card| print " #{card} "}
+    @user.cards.each { |card| print " #{card.to_s} " }
     puts "\n---------------------"
     print "Карты соперника:"
     @dealer.cards.each { |card| print" ** "}
@@ -103,10 +103,10 @@ class Interface
 
   def open_cards
     print "\nВаши карты:"
-    @user.cards.each { |card| print " #{card} "}
+    @user.cards.each { |card| print " #{card.to_s} "}
     puts "\n---------------------"
     print "Карты соперника:"
-    @dealer.cards.each { |card| print " #{card} "}
+    @dealer.cards.each { |card| print " #{card.to_s} "}
     take_stock
   end
 
